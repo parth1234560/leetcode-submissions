@@ -1,14 +1,21 @@
 class Solution {
 public:
+    int compaitable(vector<int>&arr,int k){
+        return arr[k]-(k+1);
+    }
     int findKthPositive(vector<int>& arr, int k) {
-        vector<int>result;
-        int i=0;
-        while(result.size()<=k){
-            if(find(arr.begin(),arr.end(),i)==arr.end()){
-                result.push_back(i);
-            }
-            i++;
+       int low=0;
+       int high=arr.size()-1;
+       while(low<=high){
+        int mid=(low+high)/2;
+
+        if(compaitable(arr,mid)>=k){
+            high=mid-1;
         }
-        return result[k];
+        else {
+            low=mid+1;
+        }
+       }
+       return low+k;
     }
 };
