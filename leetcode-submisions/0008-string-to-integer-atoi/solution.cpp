@@ -1,32 +1,40 @@
 class Solution {
 public:
+    bool isDigit(int n){
+        for(int i=0;i<10;i++){
+            if(n==i){
+                return true;
+            }
+        }
+        return false;
+    }
     int myAtoi(string s) {
-        int i = 0, n = s.size();
-        long long result = 0;
-        int sign = 1;
-
-        // skip spaces
-        while(i < n && s[i] == ' ') i++;
-
-        // sign
-        if(i < n && (s[i] == '+' || s[i] == '-')) {
-            if(s[i] == '-') sign = -1;
+        long long int num=0;
+        int i=0;
+        int n=s.size();
+        int sign=1;
+        while(i<n && s[i]==' '){
             i++;
         }
-
-        // digits
-        while(i < n && isdigit(s[i])) {
-            int digit = s[i] - '0';
-
-            // overflow check
-            if(result > (INT_MAX - digit) / 10)
-                return sign == 1 ? INT_MAX : INT_MIN;
-
-            result = result * 10 + digit;
+        if(i<n && (s[i]=='+'||s[i]=='-')){
+            if(s[i]=='+'){
+                sign=1;
+            }
+            if(s[i]=='-'){
+                sign=-1;
+            }
             i++;
         }
-
-        return sign * result;
+        while(i<n && isDigit(s[i]-'0') ){
+            num=num*10+(s[i]-'0');
+        if(num>INT_MAX){
+            return sign==1? INT_MAX: INT_MIN;
+        }
+            i++;
+        }
+        if(num>INT_MAX){
+            return sign==1? INT_MAX: INT_MIN;
+        }
+        return num*sign;
     }
 };
-
