@@ -2,24 +2,22 @@ class Solution {
 public:
     string reverseWords(string s) {
         int n=s.size();
-        string ans="";
+        string x="";
         for(int i=n-1;i>=0;i--){
             while(i>=0 && s[i]==' '){
                 i--;
             }
-            if(i<0){
-                break;
-            }
+            if(i<0){return x;}
             int j=i;
             while(j>=0 && s[j]!=' '){
                 j--;
             }
-            if(!ans.empty()){
-                ans=ans+' ';
+            if(!x.empty()){
+                x=x+" ";
             }
-            ans+=s.substr(j+1,i-j);
-           i=j;
+            x=x+s.substr(j+1,i-j);
+            i=j;
         }
-        return ans;
+        return x;
     }
 };
