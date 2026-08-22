@@ -17,35 +17,20 @@ public:
         int count=0;
         ListNode* ptr=head;
         while(ptr->next!=NULL){
-            count+=1;
+            count++;
             ptr=ptr->next;
         }
-
         count++;
-        if(head->next->next==NULL ){
-            if(k>0 && k%count!=0){
-            ListNode* prv=head->next;
-            prv->next=head;
-            head->next=NULL;
-            head=prv;
-            }
-            return head;
-        }
-        if(k>count){
-            k=k%count;
-        }
-        k=count-k+1;
-    ListNode*end=ptr;
+        k=k%count;
+        ptr->next=head;
+        count=count-k;
         ptr=head;
-
-        for(int i=1;i<k-1;i++){
+        while(count>1){
             ptr=ptr->next;
+            count--;
         }
-        if(k>1){
-        end->next=head;
         head=ptr->next;
         ptr->next=NULL;
-
-            }    return head;
+        return head;
     }
 };
