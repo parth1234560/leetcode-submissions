@@ -10,51 +10,57 @@
  */
 class Solution {
 public:
-    ListNode* findMid(ListNode* head){
-        ListNode* slow=head,*fast=head;
-        while(fast->next && fast->next->next){
-            slow=slow->next;
-            fast=fast->next->next;
+    ListNode* merge2List(ListNode* h1,ListNode* h2){
+        if(h1==NULL){
+            return h2;
         }
-        return slow;
-    }
-    ListNode* merge(ListNode* left,ListNode* right){
-        ListNode dummy(0);
-        ListNode* tail=&dummy;
-        while(left && right){
-            if(left->val<=right->val){
-                tail->next=left;
-                left=left->next;
+        if(h2==NULL){
+            return h1;
+        }
+        ListNode* dummy=new ListNode(-1);
+        ListNode*t=dummy;
+        while(h1!=NULL && h2!=NULL){
+            if(h1->val<h2->val){
+                ListNode* node=new ListNode(h1->val);
+                t->next=node;
+                h1=h1->next;
             }
             else{
-                tail->next=right;
-                right=right->next;
+                ListNode* node=new ListNode(h2->val);
+                t->next=node;
+                h2=h2->next;
             }
-            tail=tail->next;
+                t=t->next;
 
         }
-        while(left){
-            tail->next=left;
-            left=left->next;
-            tail=tail->next;
+        if(h1){
+            t->next=h1;
         }
-        while(right){
-            tail->next=right;
-            right=right->next;
-            tail=tail->next;
+        if(h2){
+            t->next=h2;
         }
-        return (&dummy)->next;
+        return dummy->next;
+
+    }
+    ListNode* findmid(ListNode* head){
+        ListNode* slow=head;
+        ListNode* fast=head->next;
+        while(fast->next!=NULL && fast->next->next!=NULL){
+            fast=fast->next->next;
+            slow=slow->next;
+        }
+        return slow;
     }
     ListNode* sortList(ListNode* head) {
         if(head==NULL || head->next==NULL){
             return head;
         }
-        ListNode* mid=findMid(head);
-        ListNode*left=head;
-        ListNode* right=mid->next;
-        mid->next=NULL;
-        left=sortList(left);
-        right=sortList(right);
-        return merge(left,right);
+
+        ListNode* left=head;
+        ListNode* right=findmid(head)->next;
+        findmid(head)->next=NULL;
+        ListNode* leftV=sortList(left);
+        ListNode* rightV=sortList(right);
+         return merge2List(leftV,rightV);
     }
 };
