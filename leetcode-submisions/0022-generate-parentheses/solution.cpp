@@ -1,17 +1,26 @@
 class Solution {
 public:
-    void generate(int n,int l,int r,string s,vector<string>&res){
-        //since akhiri mme hamesha r hi ata hai
-        if(r==n){res.push_back(s);return;}
-        //since starting me hamesha l hi ata hai
-        if(l<n){generate(n,l+1,r,s+"(",res);}
-        //r jo hai wo l ke bad hi ayega
-        if(r<l){generate(n,l,r+1,s+")",res);}
-        
+    void adder(vector<string>&res,string& x,int l,int r,int n){
+        if(l==r && l==n){
+            res.push_back(x);
+        }
+        if(l<n){
+            x.push_back('(');
+            adder(res,x,l+1,r,n);
+            x.pop_back();
+        }
+        if(r<n && r<l){
+            x.push_back(')');
+            adder(res,x,l,r+1,n);
+            x.pop_back();
+        }
+
     }
     vector<string> generateParenthesis(int n) {
+        
         vector<string>res;
-        generate(n,0,0,"",res);
-        return res;
+        string x="";
+         adder(res,x,0,0,n);
+         return res;
     }
 };
