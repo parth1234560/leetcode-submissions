@@ -1,27 +1,31 @@
 class Solution {
 public:
     vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
-        int n1=nums1.size(),n2=nums2.size();
-        vector<int>res;
-        for(int x:nums1){
-            int isGreater=-1;
-            queue<int>q;
-            for(int i=n2-1;i>=0;i--){
-                if(nums2[i]==x){
-                    break;
+        int n1=nums1.size();
+        int n2=nums2.size();
+        int max=*max_element(nums2.begin(),nums2.end());
+
+        vector<priority_queue<int>>pq(max+1);
+        for(int i=0;i<n2;i++){
+            for(int j=i+1;j<n2;j++){
+                if(nums2[i]<nums2[j]){
+                pq[nums2[i]].push(nums2[j]);
+                break;
                 }
-                else{
-                    q.push(nums2[i]);
-                }
+                
             }
-            while(!q.empty()){
-                if(q.front()>x){
-                    isGreater=q.front();
-                }
-                q.pop();
+
+        }
+        vector<int>res(n1);
+        for(int i=0;i<n1;i++){
+            if(pq[nums1[i]].empty()){
+                res[i]=-1;
             }
-            res.push_back(isGreater);
+            else{
+                res[i]=pq[nums1[i]].top();
+            }
         }
         return res;
+
     }
 };
