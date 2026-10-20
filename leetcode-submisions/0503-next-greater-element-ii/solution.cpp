@@ -11,12 +11,8 @@ public:
             if(i<nums.size()){
                 nge[i]=st.empty()?-1:st.top();
             }
-            
             st.push(nums[i%nums.size()]);
-
-
-        }
-        
+    }
         return nge;
     }
 };
