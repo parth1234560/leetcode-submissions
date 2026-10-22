@@ -1,55 +1,52 @@
 class Solution {
 public:
-    int pse(vector<int>&arr,int i){
-        int j=i-1;
-        while(j>=0){
-            if(arr[i]>arr[j]){
-                return j;
-            }
-            j--;
-        }
-            return -1;
-    }
-    int nse(vector<int>&arr,int i){
-        int j=i+1;
+    vector<int>findNse(vector<int>&arr){
         int n=arr.size();
-        while(j<n){
-            if(arr[i]>=arr[j]){
-                return j;
-            }
-            j++;
-        }
-        return n;
-
-    }
-    int sumSubarrayMins(vector<int>& arr) {
-        long long res=0;
-        int n=arr.size();
-        int mod=1e9+7;
-        vector<int>left(n);
-        vector<int>right(n);
+        vector<int>nse(n);
         stack<int>st;
-        for(int i=0;i<n;i++){
+        for(int i=n-1;i>=0;i--){
             while(!st.empty() && arr[st.top()]>=arr[i]){
                 st.pop();
             }
-            left[i]=st.empty()?i+1:i-st.top();
+            nse[i]=st.empty()?n:st.top();
             st.push(i);
         }
-        while(!st.empty()){
-            st.pop();
-        }
-        for(int j=n-1;j>=0;j--){
-            while(!st.empty() && arr[st.top()]>arr[j]){
+        return nse;
+    }
+    vector<int>findPsee(vector<int>&arr){
+        int n=arr.size();
+        vector<int>psee(n);
+        stack<int>st;
+        for(int i=0;i<n;i++){
+            while(!st.empty() && arr[st.top()]>arr[i]){
                 st.pop();
             }
-            right[j]=st.empty()?n-j:st.top()-j;
-            st.push(j);
+            psee[i]=st.empty()?-1:st.top();
+            st.push(i);
         }
-        
-        for(int j=0;j<n;j++){
-        res=(res+1LL*left[j]*right[j]*arr[j])%mod;
+        return psee;
+    }
+    int sumSubarrayMins(vector<int>& arr) {
+        int sum=0;
+        int mod=(int)(1e9+7);
+        int n=arr.size();
+        // for(int i=0;i<n;i++){
+        //     int mini=arr[i];
+        //     for(int j=i;j<n;j++){
+        //         mini=min(mini,arr[j]);
+        //         sum=(sum+mini)%mod;
+        //     }
+        // }
+        //optimal code-->
+        vector<int>nse=findNse(arr);
+        vector<int>psee=findPsee(arr);
+        int total=0;
+        for(int i=0;i<n;i++){
+            int left=i-psee[i];
+            int right=nse[i]-i;
+            total=(total+(1LL*left*right*arr[i])%mod)%mod;
+
         }
-        return int(res);
+        return total;
     }
 };
